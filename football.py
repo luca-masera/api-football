@@ -36,7 +36,40 @@ endpoint = "countries"
 url = f"{base_url}{endpoint}"
 print(url)
 
-#faccio a richiesta api
+#faccio a richiesta api per i continenti
 
 countries = requests.request("get", url, headers=headers)
-print(countries.json())
+
+c_dict= countries.json()['response']
+print(len(c_dict))
+print(json.dumps(c_dict[0], indent=4))
+
+#stampo tutti i paesi con le iniziali
+for i in c_dict:
+    print(f"{i["name"]} -> {i["code"]}")
+    
+
+params = {
+    "code" : "IT"
+}
+
+italy = requests.request("get", url, headers=headers, params=params)
+print(italy.json())
+print(italy.request.url)
+
+#faccio a richiesta api per i campionati e prendo la serie A
+
+endpoint = "leagues"
+
+url = f"{base_url}{endpoint}"
+print(url)
+
+leagues = requests.request("get", url, headers=headers, params=params)
+print(json.dumps(leagues.json()['response'], indent=4))
+
+italy_leagues = leagues.json()['response']
+serie_a = italy_leagues[0]
+print(serie_a['league'])
+
+serie_a_id= serie_a['league']['id']
+print(serie_a_id)
